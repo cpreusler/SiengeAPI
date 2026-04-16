@@ -1,0 +1,679 @@
+{
+  "sienge_api": {
+    "base_url": "https://api.sienge.com.br/v1",
+    "authentication": "Bearer Token",
+    "documentation": "https://api.sienge.com.br/docs/",
+    "total_modules": 79,
+    "extracted_date": "2026-04-16"
+  },
+  "modules": [
+    {
+      "module": "Clientes",
+      "category": "CRM",
+      "base_path": "/customers",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/customers",
+          "description": "Lista clientes com paginação",
+          "params": {
+            "page": {
+              "type": "integer",
+              "required": false
+            },
+            "size": {
+              "type": "integer",
+              "required": false,
+              "max": 200
+            },
+            "name": {
+              "type": "string",
+              "required": false
+            },
+            "document": {
+              "type": "string",
+              "required": false
+            }
+          },
+          "response_fields": {
+            "id": "integer",
+            "name": "string",
+            "document": "string",
+            "email": "string",
+            "phoneNumber": "string",
+            "customerType": "string",
+            "status": "string",
+            "createdAt": "date-time"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/customers",
+          "description": "Cria novo cliente",
+          "required_fields": [
+            "name",
+            "document",
+            "customerType"
+          ],
+          "body_fields": {
+            "name": "string",
+            "document": "string",
+            "customerType": "string",
+            "email": "string",
+            "phoneNumber": "string",
+            "birthDate": "date",
+            "civilStatus": "string",
+            "profession": "string",
+            "income": "number"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/customers/{id}",
+          "description": "Busca cliente por ID",
+          "path_params": {
+            "id": "integer"
+          },
+          "response_fields": {
+            "id": "integer",
+            "name": "string",
+            "document": "string",
+            "addresses": "array",
+            "spouse": "object"
+          }
+        },
+        {
+          "method": "PATCH",
+          "path": "/customers/{id}",
+          "description": "Atualiza cliente",
+          "path_params": {
+            "id": "integer"
+          },
+          "body_fields": {
+            "name": "string",
+            "email": "string",
+            "phoneNumber": "string"
+          }
+        }
+      ]
+    },
+    {
+      "module": "Credores",
+      "category": "Financeiro",
+      "base_path": "/creditors",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/creditors",
+          "description": "Cria novo credor/fornecedor",
+          "required_fields": [
+            "name",
+            "document",
+            "creditorType"
+          ],
+          "body_fields": {
+            "name": "string",
+            "document": "string",
+            "creditorType": "string",
+            "fantasyName": "string",
+            "email": "string",
+            "phoneNumber": "string",
+            "address": "string",
+            "city": "string",
+            "state": "string",
+            "zipCode": "string"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/creditors",
+          "description": "Lista credores",
+          "params": {
+            "name": {
+              "type": "string",
+              "required": false
+            },
+            "document": {
+              "type": "string",
+              "required": false
+            },
+            "status": {
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/creditors/{creditorId}/bank-informations",
+          "description": "Adiciona conta bancária",
+          "path_params": {
+            "creditorId": "integer"
+          },
+          "required_fields": [
+            "bank",
+            "agency",
+            "account"
+          ],
+          "body_fields": {
+            "bank": "string",
+            "agency": "string",
+            "account": "string",
+            "accountType": "string",
+            "holderName": "string"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/creditors/{creditorId}/pix-informations",
+          "description": "Adiciona chave PIX",
+          "path_params": {
+            "creditorId": "integer"
+          },
+          "required_fields": [
+            "pixKeyType",
+            "pixKey"
+          ],
+          "body_fields": {
+            "pixKeyType": "string",
+            "pixKey": "string",
+            "holderName": "string",
+            "bank": "string"
+          }
+        }
+      ]
+    },
+    {
+      "module": "Títulos a Receber",
+      "category": "Financeiro",
+      "base_path": "/accounts-receivable",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/accounts-receivable",
+          "description": "Lista títulos a receber",
+          "params": {
+            "customerId": {
+              "type": "integer",
+              "required": false
+            },
+            "dueDate": {
+              "type": "date",
+              "required": false
+            },
+            "status": {
+              "type": "string",
+              "required": false
+            }
+          },
+          "response_fields": {
+            "id": "integer",
+            "customerId": "integer",
+            "customerName": "string",
+            "originalValue": "number",
+            "currentValue": "number",
+            "dueDate": "date",
+            "status": "string"
+          }
+        }
+      ]
+    },
+    {
+      "module": "Estoque de Insumos",
+      "category": "Suprimentos",
+      "base_path": "/stock-inventories",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/stock-inventories/{costCenterId}/items",
+          "description": "Lista itens em estoque",
+          "path_params": {
+            "costCenterId": "integer"
+          },
+          "response_fields": {
+            "resourceId": "integer",
+            "resourceName": "string",
+            "quantity": "number",
+            "unit": "string",
+            "averageCost": "number",
+            "totalValue": "number"
+          }
+        }
+      ]
+    },
+    {
+      "module": "Pedidos de Compra",
+      "category": "Suprimentos",
+      "base_path": "/purchase-orders",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/purchase-orders",
+          "description": "Lista pedidos de compra",
+          "params": {
+            "creditorId": {
+              "type": "integer",
+              "required": false
+            },
+            "status": {
+              "type": "string",
+              "required": false
+            },
+            "createdFrom": {
+              "type": "date",
+              "required": false
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "all_modules_list": [
+    {
+      "name": "Acompanhamentos de Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Antecipação de Parcelas",
+      "category": "Financeiro"
+    },
+    {
+      "name": "API de relatório de extrato de credores",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Balancete de verificação",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Bens imóveis",
+      "category": "Patrimônio"
+    },
+    {
+      "name": "Bens móveis",
+      "category": "Patrimônio"
+    },
+    {
+      "name": "Calendários de Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Centro de Custos",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Clientes",
+      "category": "CRM"
+    },
+    {
+      "name": "Comissões",
+      "category": "Vendas"
+    },
+    {
+      "name": "Comissões (Antigo)",
+      "category": "Vendas"
+    },
+    {
+      "name": "Contas Contábeis",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Contas-Correntes",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Contratos de Vendas",
+      "category": "Vendas"
+    },
+    {
+      "name": "Contratos do Suprimentos",
+      "category": "Suprimentos"
+    },
+    {
+      "name": "Cotações de Preços",
+      "category": "Suprimentos"
+    },
+    {
+      "name": "Credores",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Departamentos",
+      "category": "RH"
+    },
+    {
+      "name": "Diário de Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Documentos",
+      "category": "Documentação"
+    },
+    {
+      "name": "Empreendimentos (Obras)",
+      "category": "Obras"
+    },
+    {
+      "name": "Empresas",
+      "category": "Configuração"
+    },
+    {
+      "name": "Estados Civis",
+      "category": "Configuração"
+    },
+    {
+      "name": "Estoque de Insumos",
+      "category": "Suprimentos"
+    },
+    {
+      "name": "Extrato de Cliente por E-mail",
+      "category": "CRM"
+    },
+    {
+      "name": "Extrato de contas",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Fechamento Contábil (Contabilidade)",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Geração de Boleto (Segunda Via)",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Geração de Cobrança de Parcelas Vencidas",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Geração do Saldo Devedor Presente do Cliente",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Grupos de Insumos",
+      "category": "Suprimentos"
+    },
+    {
+      "name": "Grupos de Serviços",
+      "category": "Obras"
+    },
+    {
+      "name": "Histórico de Notificação de Cobranças",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Indexadores",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Informações Fiscais de Serviço - Contas a Pagar",
+      "category": "Fiscal"
+    },
+    {
+      "name": "Informe de Rendimentos - Imposto de Renda",
+      "category": "Fiscal"
+    },
+    {
+      "name": "Insumos do Orçamento da Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Insumos Orçados da Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Lançamentos Contábeis (Contabilidade)",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Lançamentos Contábeis (Integração Contábil)",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Locação de Imóveis",
+      "category": "Imobiliário"
+    },
+    {
+      "name": "Locais de Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Lotes Contábeis (Contabilidade)",
+      "category": "Contabilidade"
+    },
+    {
+      "name": "Mapa Imobiliário Consolidado",
+      "category": "Imobiliário"
+    },
+    {
+      "name": "Marcas",
+      "category": "Configuração"
+    },
+    {
+      "name": "Medição de Contrato",
+      "category": "Obras"
+    },
+    {
+      "name": "Municípios",
+      "category": "Configuração"
+    },
+    {
+      "name": "Nota Fiscal de Compra",
+      "category": "Fiscal"
+    },
+    {
+      "name": "Notas Fiscais Eletrônicas de Produto",
+      "category": "Fiscal"
+    },
+    {
+      "name": "Orçamentos de Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Parâmetros",
+      "category": "Configuração"
+    },
+    {
+      "name": "Pedidos de Compra",
+      "category": "Suprimentos"
+    },
+    {
+      "name": "Planejamentos de Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Planos Financeiros",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Portadores para o Contas a Receber",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Profissões",
+      "category": "Configuração"
+    },
+    {
+      "name": "Reparcelamentos - Conta a Receber",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Reservas de Unidades",
+      "category": "Imobiliário"
+    },
+    {
+      "name": "Saldo de Contas Correntes",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Saldo Devedor Presente",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Saldo Devedor Presente do Cliente (Total)",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Solicitações de Compra",
+      "category": "Suprimentos"
+    },
+    {
+      "name": "Tabela de Preços",
+      "category": "Vendas"
+    },
+    {
+      "name": "Tabelas do Custos Unitários",
+      "category": "Obras"
+    },
+    {
+      "name": "Tipo de Imóveis",
+      "category": "Configuração"
+    },
+    {
+      "name": "Tipos de Clientes",
+      "category": "Configuração"
+    },
+    {
+      "name": "Tipos de Condição de Pagamento",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Títulos do Contas a Pagar",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Títulos do Contas a Receber",
+      "category": "Financeiro"
+    },
+    {
+      "name": "Unidades de Imóveis",
+      "category": "Imobiliário"
+    },
+    {
+      "name": "Unidades de Medidas",
+      "category": "Configuração"
+    },
+    {
+      "name": "Unidades de Movimento de Insumos da Obra",
+      "category": "Obras"
+    },
+    {
+      "name": "Contratos de vendas (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Cotações de preços (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Extrato Cliente Histórico (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Geração do Saldo Devedor do Cliente (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Insumos da Obra (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Itens de Orçamentos de Obra (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Movimentos de Caixa e Bancos (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Orçamento empresarial (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Parcelas do Contas a Pagar (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Parcelas do Contas a Receber (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Relatório Notas Fiscais (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Saldos Contábeis Consolidados por Centro de Custo (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Saldos Contábeis Consolidados por Empresa (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Títulos Inadimplentes (BULK)",
+      "category": "Bulk Data"
+    },
+    {
+      "name": "Gerenciamento de WebHooks",
+      "category": "Integração"
+    }
+  ],
+  "categories": {
+    "CRM": {
+      "modules": 4,
+      "description": "Gestão de clientes"
+    },
+    "Financeiro": {
+      "modules": 18,
+      "description": "Contas a pagar/receber, credores"
+    },
+    "Suprimentos": {
+      "modules": 8,
+      "description": "Compras, estoque, cotações"
+    },
+    "Obras": {
+      "modules": 15,
+      "description": "Empreendimentos e construção"
+    },
+    "Contabilidade": {
+      "modules": 8,
+      "description": "Lançamentos e balancetes"
+    },
+    "Fiscal": {
+      "modules": 4,
+      "description": "Notas fiscais e impostos"
+    },
+    "Imobiliário": {
+      "modules": 4,
+      "description": "Unidades e locação"
+    },
+    "Bulk Data": {
+      "modules": 10,
+      "description": "Relatórios massivos"
+    },
+    "Configuração": {
+      "modules": 8,
+      "description": "Dados básicos do sistema"
+    }
+  },
+  "field_types": {
+    "string": "Texto",
+    "integer": "Número inteiro",
+    "number": "Número decimal",
+    "date": "Data (YYYY-MM-DD)",
+    "date-time": "Data e hora",
+    "boolean": "Verdadeiro/Falso",
+    "array": "Lista",
+    "object": "Objeto JSON"
+  },
+  "authentication": {
+    "type": "Bearer",
+    "header": "Authorization: Bearer {token}",
+    "description": "Token obtido via /auth/token"
+  },
+  "limits": {
+    "page_size_max": 200,
+    "rate_limit_per_minute": 60,
+    "rate_limit_per_hour": 3600
+  }
+}
